@@ -324,7 +324,7 @@ private getOptionsPageContent() {
 			submitOnChange: true,
 			required: false,
 			options: ["None", "Out of Space", "Events", "Days", "Weekly", "Monthly", "Yearly"]
-		if (settings?.archiveType && !(settings?.archiveType in ["None", "Out of Space"])) {
+		if (settings?.archiveType && (settings?.archiveType in ["Events", "Days"])) { // everything ele
 			if(settings?.archiveType in ["Events"]) {
 				input "archiveInterval", "number",
 					title: "Archive After How Many Events?",
@@ -332,7 +332,7 @@ private getOptionsPageContent() {
 					required: false,
 					range: "100..100000"
 			}
-			if(settings?.archiveType in ["Days"]) {
+			else if(settings?.archiveType in ["Days"]) {
 				input "archiveInterval", "number",
 					title: "Archive After How Many Days?",
 					defaultValue: 7,
