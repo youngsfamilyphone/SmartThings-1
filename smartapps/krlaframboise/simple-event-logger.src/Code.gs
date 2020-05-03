@@ -81,7 +81,7 @@ var logEvents = function(sheet, data, result) {
 
 		result.totalEventsLogged = sheet.getLastRow() - 1;
 
-		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundTime)
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
 		
 		for (i=0; i < data.events.length; i++) {
 			
@@ -89,11 +89,11 @@ var logEvents = function(sheet, data, result) {
 			if (needToArchive(sheet, data.archiveOptions, data)) {
 				result = archiveSheet(sheet, result);
 			}
-			if(data.roundTime) {
+			if(data.roundOptions.roundTime) {
 				//round time
 				roundDate(data);
 			}
-			var round = {roundTime:data.roundTime, roundType:data.roundType, roundInterval:data.roundInterval};
+			var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
 		}
@@ -148,7 +148,7 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 				roundInterval = "0:15";
 		}
 		
-		switch (round.roundType) {
+		switch (round.roundMethod) {
 			case "Floor":
 				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + )");
 			case "Ceiling":
