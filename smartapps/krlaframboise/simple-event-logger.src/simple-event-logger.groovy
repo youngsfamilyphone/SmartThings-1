@@ -303,6 +303,7 @@ private getOptionsPageContent() {
 			required: false
 		input "logDesc", "bool",
 			title: "Log Event Descripion?",
+			description: "Will only initialize once a new file is created or old is archived",
 			defaultValue: true,
 			required: false
 		input "useValueUnitDesc", "bool",
@@ -310,7 +311,7 @@ private getOptionsPageContent() {
 			defaultValue: true,
 			required: false
 		input "logReporting", "bool",
-			title: "Include additional columns for short date and hour?",
+			title: "Include additional columns for short date, time and hour?",
 			defaultValue: false,
 			required: false
 		input "deleteExtraColumns", "bool",
@@ -353,7 +354,7 @@ private getOptionsPageContent() {
 					defaultValue: "Nearest",
 					required: false,
 					options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
-			input "archiveInterval", "number",
+			input "roundInterval", "number",
 					title: "Round Interval",
 					defaultValue: 15,
 					required: false,
