@@ -351,18 +351,20 @@ private getOptionsPageContent() {
 			submitOnChange: true,
 			defaultValue: true,
 			required: true
-		input "roundMethod", "enum",
-				title: "Round method",
-				//description: "How to round the time options: Floor, Nearest, Ceiling",
-				defaultValue: "Nearest",
-				required: false,
-				options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
-		//https://docs.smartthings.com/en/latest/device-type-developers-guide/device-preferences.html
-		input "roundInterval", "enum",
-				title: "Round Interval",
-				defaultValue: 15,
-				required: false,
-				options: [1,5,10,15,30,60]
+		if (settings?.roundTime) {
+			input "roundMethod", "enum",
+					title: "Round method",
+					//description: "How to round the time options: Floor, Nearest, Ceiling",
+					defaultValue: "Nearest",
+					required: false,
+					options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
+			//https://docs.smartthings.com/en/latest/device-type-developers-guide/device-preferences.html
+			input "roundInterval", "enum",
+					title: "Round Interval",
+					defaultValue: 15,
+					required: false,
+					options: [1,5,10,15,30,60]
+		}
 	}
 	section("${getWebAppName()}") {		
 		input "googleWebAppUrl", "text",
