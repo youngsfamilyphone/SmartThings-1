@@ -341,6 +341,8 @@ private getOptionsPageContent() {
 					range: "1..365"
 			}
 		}
+	}
+	section ("Time Rounding Options") {
 		input "roundTime", "bool",
 			title: "Round Time?",
 			description: "This will round the time to desired interval",
@@ -349,15 +351,15 @@ private getOptionsPageContent() {
 			required: true
 		input "roundMethod", "enum",
 				title: "Round method",
-				description: "How to round the time options: Floor, Nearest, Ceiling",
+				//description: "How to round the time options: Floor, Nearest, Ceiling",
 				defaultValue: "Nearest",
 				required: false,
 				options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
-		input "roundInterval", "number",
+		/*input "roundInterval", "number",
 				title: "Round Interval",
 				defaultValue: 15,
 				required: false,
-				range: "1,5,10,15,30,60"
+				range: "1,5,10,15,30,60"*/
 	}
 	section("${getWebAppName()}") {		
 		input "googleWebAppUrl", "text",
