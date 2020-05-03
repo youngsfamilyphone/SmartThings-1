@@ -355,11 +355,12 @@ private getOptionsPageContent() {
 				defaultValue: "Nearest",
 				required: false,
 				options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
-		/*input "roundInterval", "number",
+		//https://docs.smartthings.com/en/latest/device-type-developers-guide/device-preferences.html
+		input "roundInterval", "enum",
 				title: "Round Interval",
 				defaultValue: 15,
 				required: false,
-				range: "1,5,10,15,30,60"*/
+				options: [1,5,10,15,30,60]
 	}
 	section("${getWebAppName()}") {		
 		input "googleWebAppUrl", "text",
