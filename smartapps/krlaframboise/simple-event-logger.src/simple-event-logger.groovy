@@ -340,6 +340,25 @@ private getOptionsPageContent() {
 					range: "1..365"
 			}
 		}
+		input "roundDate", "bool",
+			title: "Round Date?",
+			description: "This will round the date to desired interval",
+			submitOnChange: true,
+			defaultValue: true,
+			required: true
+		if (settings?roundDate) {
+			input "roundType", "enum",
+					title: "Round method",
+					description: "Floor, Nearest, Ceiling",
+					defaultValue: "Nearest",
+					required: false,
+					options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
+			input "archiveInterval", "number",
+					title: "Round Interval",
+					defaultValue: 15,
+					required: false,
+					range: "1,5,10,15,30,60"
+		}
 	}
 	section("${getWebAppName()}") {		
 		input "googleWebAppUrl", "text",
@@ -613,6 +632,7 @@ private postEventsToGoogleSheets(events) {
 		logDesc: (settings?.logDesc != false),
 		logReporting: (settings?.logReporting == true),
 		deleteExtraColumns: (settings?.deleteExtraColumns == true),
+		roundDate: (settings?.roundDate ==true),
 		events: events
 	])
 
