@@ -346,7 +346,7 @@ private getOptionsPageContent() {
 			submitOnChange: true,
 			defaultValue: true,
 			required: true
-		if (settings?roundDate) {
+		if (settings?.roundDate) {
 			input "roundType", "enum",
 					title: "Round method",
 					description: "Floor, Nearest, Ceiling",
