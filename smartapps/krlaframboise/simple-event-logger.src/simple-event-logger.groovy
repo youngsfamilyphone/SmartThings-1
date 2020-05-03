@@ -340,16 +340,16 @@ private getOptionsPageContent() {
 					range: "1..365"
 			}
 		}
-		input "roundDate", "bool",
-			title: "Round Date?",
-			description: "This will round the date to desired interval",
+		input "roundTime", "bool",
+			title: "Round Time?",
+			description: "This will round the time to desired interval",
 			submitOnChange: true,
 			defaultValue: true,
 			required: true
-		if (settings?.roundDate) {
+		if (settings?.roundTime) {
 			input "roundType", "enum",
 					title: "Round method",
-					description: "Floor, Nearest, Ceiling",
+					description: "How to round the time options: Floor, Nearest, Ceiling",
 					defaultValue: "Nearest",
 					required: false,
 					options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
