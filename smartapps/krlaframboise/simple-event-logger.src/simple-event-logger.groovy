@@ -319,6 +319,8 @@ private getOptionsPageContent() {
 			description: "Enable this setting to increase the log size.",
 			defaultValue: true,
 			required: false
+	}
+	section ("Archive Options") {
 		input "archiveType", "enum",
 			title: "Archive Type:",
 			defaultValue: "None",
