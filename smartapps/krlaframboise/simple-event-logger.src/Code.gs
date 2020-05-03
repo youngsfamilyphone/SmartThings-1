@@ -81,7 +81,7 @@ var logEvents = function(sheet, data, result) {
 
 		result.totalEventsLogged = sheet.getLastRow() - 1;
 
-		initializeHeaderRow(sheet, data.logDesc, data.logReporting)
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundTime)
 		
 		for (i=0; i < data.events.length; i++) {
 			
@@ -89,7 +89,12 @@ var logEvents = function(sheet, data, result) {
 			if (needToArchive(sheet, data.archiveOptions, data)) {
 				result = archiveSheet(sheet, result);
 			}
-			logEvent(sheet, data.logDesc, data.logReporting, data.events[i]);
+			if(data.roundTime) {
+				//round time
+				roundDate(data);
+			}
+			var round = {roundTime:data.roundTime, roundType:data.roundType, roundInterval:data.roundInterval};
+			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
 		}
 				
@@ -110,43 +115,89 @@ var logEvents = function(sheet, data, result) {
 	return result;
 }
 
-var logEvent = function(sheet, logDesc, logReporting, event) {
+var roundTime = function(data) {
+	data.time
+}
+
+var logEvent = function(sheet, logDesc, logReporting, round, event) {
+	
 	var newRow = [
 		event.time,
 		event.device,
 		event.name,
 		event.value
 	];
-	if (logDesc || logReporting) {
+	if (round.roundTime) {
+		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
+
+		round.roundInteval
+		//roundedTime=event.time;
+		var roundInterval;
+		switch (round.roundInterval) {
+			case 1:
+				roundInterval = "0:01";
+			case 5:
+				roundInterval = "0:05";
+			case 10:
+				roundInterval = "0:10";
+			case 30:
+				roundInterval = "0:30";
+			case 60:
+				roundInterval = "1:00";
+			default : //15:
+				roundInterval = "0:15";
+		}
+		
+		switch (round.roundType) {
+			case "Floor":
+				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + )");
+			case "Ceiling":
+				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + )");
+			default: //case "Nearest":
+				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + )");
+		}
+		//=MROUND(Sheet1!A:A,"0:15")
+		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
+		
+	}
+	if (logDesc) {//(logDesc || logReporting) {
 		newRow.push(event.desc);
 	}
 	if (logReporting) {
-		var dateCell = "A" + (sheet.getLastRow() + 1).toString()
+		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
 		newRow.push("=INT(" + dateCell + ")");
+		newRow.push("=TIME(" + dateCell " ")");
 		newRow.push("=HOUR(" + dateCell + ")");
 	}	
 	sheet.appendRow(newRow);
 }
 
-var initializeHeaderRow = function(sheet, logDesc, logReporting) {		
-	if (sheet.getLastRow() == 0) {
+var initializeHeaderRow = function(sheet, logDesc, logReporting, logRoundedTime) {		
+	if (sheet.getLastRow() == 0) { // initialize all data on initialization of new document
 		var header = [
 			"Date/Time",
 			"Device",
 			"Event Name",
 			"Event Value"
-		];		
+		];
 		sheet.appendRow(header);
 		sheet.getRange("A:A").setNumberFormat('MM/dd/yyyy HH:mm:ss');
-	}	
-	if (logDesc || logReporting) {
-		sheet.getRange("E1").setValue("Description")
-	}
-	if (logReporting && sheet.getRange("F1").getValue() != "Date") {
-		sheet.getRange("F1").setValue("Date")
-		sheet.getRange("F:F").setNumberFormat('MM/dd/yyyy');
-		sheet.getRange("G1").setValue("Hour")
-		sheet.getRange("G:G").setNumberFormat('00');
+		if (logRoundedTime) {
+			//sheet.getLastColumn()+1
+			sheet.getRange("E1").setValue("Rounded Date/Time);
+			sheet.getRange("E:E").setNumberFormat('MM/dd/yyyy HH:mm:ss');
+		}
+		if (logDesc) {//(logDesc || logReporting) {
+			sheet.getRange("F1").setValue("Description");
+		}
+		if (logReporting) {//(logReporting && sheet.getRange("F1").getValue() != "Date") {
+			sheet.getRange("G1").setValue("Date");
+			sheet.getRange("G:G").setNumberFormat('MM/dd/yyyy');
+			sheet.getRange("H1").setValue("Hour")
+			sheet.getRange("H:H").setNumberFormat('00');
+			sheet.getRange("I1").setValue("Time")
+			sheet.getRange("I:I").setNumberFormat('HH:mm:ss');
+		}
 	}
 }
 
