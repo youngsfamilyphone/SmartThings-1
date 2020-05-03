@@ -347,19 +347,17 @@ private getOptionsPageContent() {
 			submitOnChange: true,
 			defaultValue: true,
 			required: true
-		if (settings?.roundTime) {
-			input "roundMethod", "enum",
-					title: "Round method",
-					description: "How to round the time options: Floor, Nearest, Ceiling",
-					defaultValue: "Nearest",
-					required: false,
-					options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
-			input "roundInterval", "number",
-					title: "Round Interval",
-					defaultValue: 15,
-					required: false,
-					range: "1,5,10,15,30,60"
-		}
+		input "roundMethod", "enum",
+				title: "Round method",
+				description: "How to round the time options: Floor, Nearest, Ceiling",
+				defaultValue: "Nearest",
+				required: false,
+				options: ["Floor", "Nearest", "Ceiling"] // Nearest = MRound
+		input "roundInterval", "number",
+				title: "Round Interval",
+				defaultValue: 15,
+				required: false,
+				range: "1,5,10,15,30,60"
 	}
 	section("${getWebAppName()}") {		
 		input "googleWebAppUrl", "text",
