@@ -348,7 +348,7 @@ private getOptionsPageContent() {
 			defaultValue: true,
 			required: true
 		if (settings?.roundTime) {
-			input "roundType", "enum",
+			input "roundMethod", "enum",
 					title: "Round method",
 					description: "How to round the time options: Floor, Nearest, Ceiling",
 					defaultValue: "Nearest",
@@ -633,7 +633,7 @@ private postEventsToGoogleSheets(events) {
 		logDesc: (settings?.logDesc != false),
 		logReporting: (settings?.logReporting == true),
 		deleteExtraColumns: (settings?.deleteExtraColumns == true),
-		roundDate: (settings?.roundDate ==true),
+		roundOptions: getRoundOptions(),
 		events: events
 	])
 
@@ -651,6 +651,15 @@ private getArchiveOptions() {
 		logIsFull: (state.loggingStatus?.logIsFull ? true : false),
 		type: (settings?.archiveType ?: ""),
 		interval: safeToLong(settings?.archiveInterval, 50000)
+	]
+}
+
+private getRoundOptions() {
+	return [
+		roundDate: (settings?.roundDate ==true),
+		logIsFull: (state.loggingStatus?.logIsFull ? true : false),
+		roundMethod: (settings?.roundMethod ?: "Nearest"),
+		roundinterval: safeToLong(settings?.roundOptions, 15)
 	]
 }
 
