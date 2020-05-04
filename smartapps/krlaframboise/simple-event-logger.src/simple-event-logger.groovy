@@ -7,6 +7,7 @@
  *  URL to documentation:
  *    https://github.com/krlaframboise/SmartThings/tree/master/smartapps/krlaframboise/simple-event-logger.src#simple-event-logger
  *
+ *  What went wrong: https://community.smartthings.com/t/faq-logs-and-smartthings-an-intro-into-figuring-out-what-went-wrong/19060
  *  Changelog:
  *
  *    1.5 (02/19/2019)
