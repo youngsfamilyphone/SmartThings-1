@@ -685,8 +685,8 @@ private getRoundOptions() {
 	return [
 		roundTime: (settings?.roundTime ==true),
 		roundMethod: (settings?.roundMethod ?: "Nearest"),
-		roundInterval: safeToLong(settings?.roundInterval, 15)/*,
-		replaceDate: (settings?.replaceDate == true)*/
+		roundInterval: safeToLong(settings?.roundInterval, 15),
+		replaceDate: (settings?.replaceDate == true)
 	]
 }
 
