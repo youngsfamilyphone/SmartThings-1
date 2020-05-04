@@ -89,6 +89,7 @@ var logEvents = function(sheet, data, result) {
 			// need to check for archive on each entry to properly archive at the proper time
 			if (needToArchive(sheet, data.archiveOptions, data)) {
 				result = archiveSheet(sheet, result);
+				initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
 			}
 			var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
