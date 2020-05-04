@@ -603,6 +603,10 @@ private getNewLastEventTimeMS(startedMS, firstEventMS) {
 	}
 }
 
+privarte getLogReporting() {
+	return settings?.logReporting;
+}
+
 private getLogCatchUpFrequencySetting() {
 	return settings?.logCatchUpFrequency ?: "1 Hour"
 }
@@ -652,6 +656,18 @@ private postEventsToGoogleSheets(events) {
 	asynchttp_v1.post(processLogEventsResponse, params)
 }
 
+private getWebAppUrl() {
+	return settings?.googleWebAppUrl;
+}
+
+private getArchiveType() {
+	return settings?.archiveType;
+}
+
+private getArchiveInterval() {
+	return settings?.archiveInterval;
+}
+
 private getArchiveOptions() {
 	return [
 		logIsFull: (state.loggingStatus?.logIsFull ? true : false),
@@ -662,11 +678,22 @@ private getArchiveOptions() {
 
 private getRoundOptions() {
 	return [
-		roundDate: (settings?.roundDate ==true),
-		logIsFull: (state.loggingStatus?.logIsFull ? true : false),
+		roundTime: (settings?.roundTime ==true),
 		roundMethod: (settings?.roundMethod ?: "Nearest"),
-		roundinterval: safeToLong(settings?.roundOptions, 15)
+		roundInterval: safeToLong(settings?.roundInterval, 15)
 	]
+}
+
+private getRoundTime() {
+	return settings?.roundTime;	
+}
+
+private getRoundMethod() {
+	return settings?.roundMethod;	
+}
+
+private getRoundInterval() {
+	return settings?.roundInterval;	
 }
 
 // Google Sheets redirects the post to a temporary url so the response is usually 302 which is page moved.
