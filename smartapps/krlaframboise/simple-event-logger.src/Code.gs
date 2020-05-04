@@ -152,15 +152,15 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
 		
 	}
-	if (logDesc) {//(logDesc || logReporting) {
-		newRow.push(event.desc);
-	}
 	if (logReporting) {
 		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
 		newRow.push("=INT(" + dateCell + ")");
 		newRow.push("=TIME(" + dateCell + ")");
 		newRow.push("=HOUR(" + dateCell + ")");
-	}	
+	}
+	if (logDesc) {//(logDesc || logReporting) {
+		newRow.push(event.desc);
+	}
 	sheet.appendRow(newRow);
 }
 
@@ -179,16 +179,16 @@ var initializeHeaderRow = function(sheet, logDesc, logReporting, logRoundedTime)
 			sheet.getRange("E1").setValue("Rounded Date/Time");
 			sheet.getRange("E:E").setNumberFormat('MM/dd/yyyy HH:mm:ss');
 		}
-		if (logDesc) {//(logDesc || logReporting) {
-			sheet.getRange("F1").setValue("Description");
-		}
 		if (logReporting) {//(logReporting && sheet.getRange("F1").getValue() != "Date") {
-			sheet.getRange("G1").setValue("Date");
-			sheet.getRange("G:G").setNumberFormat('MM/dd/yyyy');
-			sheet.getRange("H1").setValue("Hour")
-			sheet.getRange("H:H").setNumberFormat('00');
-			sheet.getRange("I1").setValue("Time")
-			sheet.getRange("I:I").setNumberFormat('HH:mm:ss');
+			sheet.getRange("F1").setValue("Date");
+			sheet.getRange("F:F").setNumberFormat('MM/dd/yyyy');
+			sheet.getRange("G1").setValue("Hour")
+			sheet.getRange("G:G").setNumberFormat('00');
+			sheet.getRange("H1").setValue("Time")
+			sheet.getRange("H:H").setNumberFormat('HH:mm:ss');
+		}
+		if (logDesc) {//(logDesc || logReporting) {
+			sheet.getRange("I1").setValue("Description");
 		}
 	}
 }
