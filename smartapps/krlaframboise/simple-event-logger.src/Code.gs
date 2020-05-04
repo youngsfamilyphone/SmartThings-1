@@ -64,9 +64,7 @@ function doPost(e) {
 		var data = JSON.parse(e.postData.contents);
 		if (data) {	
 			var sheet = SpreadsheetApp.getActiveSheet();
-			//Logger.log(SpreadsheetApp.getActive().getName());
  			Logger.log(sheet.getName());
-  			//Logger.log(SpreadsheetApp.getActiveSpreadsheet().getName());
 			
 			// need to check for archive on each log line/entry to archive correctly
 			result = logEvents(sheet, data, result);
@@ -243,9 +241,8 @@ var needToArchive = function(sheet, archiveOptions, data) {
 	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
 	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
       		return false;
-	Logger.log("sheet first date: " + sheetFirstDate);
-    	Logger.log("sheet last date: " + sheetLastDate);
-	Logger.log(archiveOptions);
+
+	//Logger.log(archiveOptions);
 	switch (archiveOptions.type) {
 		case "Out of Space":
 			return (archiveOptions.logIsFull || ((sheet.getMaxRows() + newEvents) >= (getLogCapacity() / sheet.getMaxColumns())));
@@ -275,7 +272,7 @@ var getDaysSince = function(eventDate, firstDt) {
 	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
 	var diffMS = Math.abs(eventDate - firstDate);
-	return Math.floor(diffMS / dayMS); 	
+	return Math.floor(diffMS / dayMS);
 }
 
 var archiveSheet = function(sheet, result) {	
