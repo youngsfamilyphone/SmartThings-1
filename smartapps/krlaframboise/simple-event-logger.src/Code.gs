@@ -89,10 +89,6 @@ var logEvents = function(sheet, data, result) {
 			if (needToArchive(sheet, data.archiveOptions, data)) {
 				result = archiveSheet(sheet, result);
 			}
-			if(data.roundOptions.roundTime) {
-				//round time
-				roundDate(data);
-			}
 			var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
@@ -113,10 +109,6 @@ var logEvents = function(sheet, data, result) {
 		result.success = false;
 	}
 	return result;
-}
-
-var roundTime = function(data) {
-	data.time
 }
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
