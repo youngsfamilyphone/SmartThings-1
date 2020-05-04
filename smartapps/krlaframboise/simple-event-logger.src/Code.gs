@@ -48,7 +48,7 @@
  *
  */
    
-var getVersion = function() { return "01.05.00"; }
+var getVersion = function() { return "01.06.00"; }
  
 function doGet(e) {
 	var output = "Version " + getVersion()
@@ -81,8 +81,9 @@ var logEvents = function(sheet, data, result) {
 		//Logger.log(data);
 		//Logger.log(result);
 		result.totalEventsLogged = sheet.getLastRow() - 1;
+		var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 
-		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, round)
 		
 		for (i=0; i < data.events.length; i++) {
 			
@@ -91,7 +92,6 @@ var logEvents = function(sheet, data, result) {
 				result = archiveSheet(sheet, result);
 				initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
 			}
-			var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
 		}
@@ -124,24 +124,7 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	if (round.roundTime) {
 		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
 
-		round.roundInteval
-		//roundedTime=event.time;
-		var roundInterval;
-		switch (round.roundInterval) {
-			case 1:
-				roundInterval = "\"0:01\"";
-			case 5:
-				roundInterval = "\"0:05\"";
-			case 10:
-				roundInterval = "\"0:10\"";
-			case 30:
-				roundInterval = "\"0:30\"";
-			case 60:
-				roundInterval = "\"1:00\"";
-			default : //15:
-				roundInterval = "\"0:15\"";
-		}
-		
+		var roundInterval = getRoundIntervalAsString(round.roundInterval);
 		switch (round.roundMethod) {
 			case "Floor":
 				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + ")");
@@ -166,7 +149,26 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	sheet.appendRow(newRow);
 }
 
-var initializeHeaderRow = function(sheet, logDesc, logReporting, logRoundedTime) {		
+var getRoundIntervalAsString = function(roundInterval) {
+	var interval = "\"0:15\"";
+	switch (roundInterval) {
+		case 1:
+			interval = "\"0:01\"";
+		case 5:
+			interval = "\"0:05\"";
+		case 10:
+			interval = "\"0:10\"";
+		case 30:
+			interval = "\"0:30\"";
+		case 60:
+			interval = "\"1:00\"";
+		//default : //15:
+			//interval = "\"0:15\"";
+	}
+	return interval;
+}
+
+var initializeHeaderRow = function(sheet, logDesc, logReporting, round) {		
 	if (sheet.getLastRow() == 0) { // initialize all data on initialization of new document
 		var header = [
 			"Date/Time",
@@ -176,10 +178,11 @@ var initializeHeaderRow = function(sheet, logDesc, logReporting, logRoundedTime)
 		];
 		sheet.appendRow(header);
 		sheet.getRange("A:A").setNumberFormat('MM/dd/yyyy HH:mm:ss');
-		if (logRoundedTime) {
+		if (round.roundTime) {data.roundOptions.roundInterval
 			//sheet.getLastColumn()+1
 			sheet.getRange("E1").setValue("Rounded Date/Time");
 			sheet.getRange("E:E").setNumberFormat('MM/dd/yyyy HH:mm:ss');
+			//sheet.setValue("=IF(ISBLANK(Sheet1!A:A), , MROUND(" + dateCell + ", " + getRoundIntervalAsString(round.roundInterval) + ")"));
 		}
 		if (logReporting) {//(logReporting && sheet.getRange("F1").getValue() != "Date") {
 			sheet.getRange("F1").setValue("Date");
