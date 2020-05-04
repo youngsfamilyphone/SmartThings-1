@@ -87,7 +87,7 @@ var logEvents = function(sheet, data, result) {
 		for (i=0; i < data.events.length; i++) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
-			if (needToArchive(sheet, data.archiveOptions, data)) {
+			if (needToArchive(sheet, data.archiveOptions, data)) { //TODO: this can be moved out of the for loop if all events in this post have the same day.
 				result = archiveSheet(sheet, result);
 				initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
 			}
@@ -251,11 +251,11 @@ var needToArchive = function(sheet, archiveOptions, data) {
 }
 
 var getDaysSince = function(eventDate, firstDt) {
-    if (typeof firstDt=='undefined') {
+    /*if (typeof firstDt=='undefined') {
       return 0;
       //var currentDT = new Date();
       //firstDt = Date.UTC(currentDT.getFullYear(), currentDT.getMonth(), currentDT.getDate());
-    }
+    }*/
 	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
 	return Math.floor(diffMS / dayMS); 	
