@@ -64,6 +64,9 @@ function doPost(e) {
 		var data = JSON.parse(e.postData.contents);
 		if (data) {	
 			var sheet = SpreadsheetApp.getActiveSheet();
+			//Logger.log(SpreadsheetApp.getActive().getName());
+ 			Logger.log(sheet.getName());
+  			//Logger.log(SpreadsheetApp.getActiveSpreadsheet().getName());
 			
 			// need to check for archive on each log line/entry to archive correctly
 			result = logEvents(sheet, data, result);
@@ -88,10 +91,8 @@ var logEvents = function(sheet, data, result) {
 		for (i=0; i < data.events.length; i++) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
-			if (needToArchive(sheet, data.archiveOptions, data)) { //TODO: this can be moved out of the for loop if all events in this post have the same day.
-				result = archiveSheet(sheet, result);
-				initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
-			}
+			//TODO: Test by logging now as log time in a column.  this can be moved out of the for loop if all events in this post have the same day.
+			archiveCheck(sheet, data, result);
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
 		}
@@ -225,13 +226,20 @@ var sendPostback = function(url, result) {
 
 var getLogCapacity = function() { return 500000; }
 
+var archiveCheck = function(sheet, data, result) {
+	if (needToArchive(sheet, data.archiveOptions, data)) { 
+		result = archiveSheet(sheet, result);
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
+	}
+}
+
 var needToArchive = function(sheet, archiveOptions, data) {
 	var newEvents = data.events.length;
 	var eventDate = data.events[i].time;
 	// is this google script or javascript dates https://developers.google.com/apps-script/reference/contacts/date-field#getDay()
 	// getDay is different between the two
-	var sheetFirstDate = sheet.getRange(2, 1).value;
-	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).value;
+	var sheetFirstDate = sheet.getRange(2, 1).getValue();
+	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).getValue();
 	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
 	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
       		return false;
