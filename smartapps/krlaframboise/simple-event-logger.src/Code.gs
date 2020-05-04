@@ -228,11 +228,16 @@ var getLogCapacity = function() { return 500000; }
 var needToArchive = function(sheet, archiveOptions, data) {
 	var newEvents = data.events.length;
 	var eventDate = data.events[i].time;
+	// is this google script or javascript dates https://developers.google.com/apps-script/reference/contacts/date-field#getDay()
+	// getDay is different between the two
 	var sheetFirstDate = sheet.getRange(2, 1).value;
 	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).value;
 	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
 	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
       		return false;
+	Logger.log("sheet first date: " + sheetFirstDate);
+    	Logger.log("sheet last date: " + sheetLastDate);
+	Logger.log(archiveOptions);
 	switch (archiveOptions.type) {
 		case "Out of Space":
 			return (archiveOptions.logIsFull || ((sheet.getMaxRows() + newEvents) >= (getLogCapacity() / sheet.getMaxColumns())));
