@@ -78,7 +78,8 @@ function doPost(e) {
 
 var logEvents = function(sheet, data, result) {
 	try {
-
+		//Logger.log(data);
+		//Logger.log(result);
 		result.totalEventsLogged = sheet.getLastRow() - 1;
 
 		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
@@ -221,6 +222,8 @@ var sendPostback = function(url, result) {
 var getLogCapacity = function() { return 500000; }
 
 var needToArchive = function(sheet, archiveOptions, data) {
+    	if (sheet.getLastRow()<=1)
+		return false;
 	var newEvents = data.events.length;
 	var eventDate = data.events[i].time;
 	var sheetFirstDate = sheet.getRange(2, 1).value;
@@ -253,8 +256,7 @@ var getDaysSinceNow = function(firstDt) {
 }
 
 var getDaysSince = function(eventDate, firstDT) {
-	var firstDate = Date.UTC(firstDT.getFullYear(), firstDT.getMonth(), firstDT.getDate());
-	var diffMS = Math.abs(eventDate - firstDate);
+	var firstDate = typeof firstDt=="undefined" ? Date.now() : Date.UTC(firstDT.getFullYear(), firstDT.getMonth(), firstDT.getDate());	var diffMS = Math.abs(eventDate - firstDate);
 	var dayMS = 1000 * 60 * 60 * 24;
 	return Math.floor(diffMS / dayMS); 	
 }
