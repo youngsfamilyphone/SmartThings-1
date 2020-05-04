@@ -603,7 +603,7 @@ private getNewLastEventTimeMS(startedMS, firstEventMS) {
 	}
 }
 
-privarte getLogReporting() {
+private getLogReporting() {
 	return settings?.logReporting;
 }
 
