@@ -144,11 +144,11 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 		
 		switch (round.roundMethod) {
 			case "Floor":
-				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + ")");
+				newRow.push("=FLOOR(" + dateCell + ", " + \"roundInterval\" + ")");
 			case "Ceiling":
-				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + ")");
+				newRow.push("=CEIlING(" + dateCell + ", " + \"roundInterval\" + ")");
 			default: //case "Nearest":
-				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + ")");
+				newRow.push("=MROUND(" + dateCell + ", " + \"roundInterval\" + ")");
 		}
 		//=MROUND(Sheet1!A:A,"0:15")
 		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
