@@ -113,9 +113,9 @@ var logEvents = function(sheet, data, result) {
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	
-	if ((round.roundTime && round.replaceDate)) {
+	if (round.roundTime && round.replaceDate) {
 		var roundInterval = getRoundIntervalAsString(round.roundInterval);
-		event.time = roundDate(roundInterval, dateCell);
+		event.time = roundDate(roundInterval, event.time);
 	}
 	
 	var newRow = [
