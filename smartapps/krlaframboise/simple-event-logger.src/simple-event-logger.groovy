@@ -364,7 +364,12 @@ private getOptionsPageContent() {
 					title: "Round Interval",
 					defaultValue: 15,
 					required: false,
-					options: [1,5,10,15,30,60]
+					options: [1,5,10,15,30,60],
+			input "replaceDate", "bool",
+				title: "Replace Original Date",
+				description: "Replace the rounded date with the original date",
+				required: true,
+				defaultValue: false
 		}
 	}
 	section("${getWebAppName()}") {		
@@ -681,6 +686,7 @@ private getRoundOptions() {
 		roundTime: (settings?.roundTime ==true),
 		roundMethod: (settings?.roundMethod ?: "Nearest"),
 		roundInterval: safeToLong(settings?.roundInterval, 15)
+		replaceDate: settings?.replaceDate;
 	]
 }
 
