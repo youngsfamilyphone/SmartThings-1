@@ -222,13 +222,13 @@ var sendPostback = function(url, result) {
 var getLogCapacity = function() { return 500000; }
 
 var needToArchive = function(sheet, archiveOptions, data) {
-    	if (sheet.getLastRow()<=1)
-		return false;
 	var newEvents = data.events.length;
 	var eventDate = data.events[i].time;
 	var sheetFirstDate = sheet.getRange(2, 1).value;
 	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).value;
 	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
+	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
+      		return false;
 	switch (archiveOptions.type) {
 		case "Out of Space":
 			return (archiveOptions.logIsFull || ((sheet.getMaxRows() + newEvents) >= (getLogCapacity() / sheet.getMaxColumns())));
@@ -248,14 +248,13 @@ var needToArchive = function(sheet, archiveOptions, data) {
 			return false;
 	}
 }
-var getDaysSinceNow = function(firstDt) {
-	var currentDT = new Date();
-	var currentDate = Date.UTC(currentDT.getFullYear(), currentDT.getMonth(), currentDT.getDate());
-	// just use Date.now() instead of currentDate;
-	return getDaysSince(currentDate, firstDt);
-}
 
-var getDaysSince = function(eventDate, firstDT) {
+var getDaysSince = function(eventDate, firstDt) {
+    if (typeof firstDt=='undefined') {
+      return 0;
+      //var currentDT = new Date();
+      //firstDt = Date.UTC(currentDT.getFullYear(), currentDT.getMonth(), currentDT.getDate());
+    }
 	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
 	return Math.floor(diffMS / dayMS); 	
