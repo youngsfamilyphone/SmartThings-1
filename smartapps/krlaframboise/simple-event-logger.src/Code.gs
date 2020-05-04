@@ -82,15 +82,14 @@ var logEvents = function(sheet, data, result) {
 		//Logger.log(data);
 		//Logger.log(result);
 		result.totalEventsLogged = sheet.getLastRow() - 1;
-		var round = {roundTime:data.roundOptions.roundTime, roundType:data.roundOptions.roundMethod, roundInterval:data.roundOptions.roundInterval};
 
-		initializeHeaderRow(sheet, data.logDesc, data.logReporting, round)
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions)
 		
 		for (i=0; i < data.events.length; i++) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
 			//TODO: Test by logging now as log time in a column.  this can be moved out of the for loop if all events in this post have the same day.
-			archiveCheck(sheet, data, result);
+			archiveCheck(sheet, data, result, round);
 			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
 			result.eventsLogged++;
 		}
@@ -114,27 +113,22 @@ var logEvents = function(sheet, data, result) {
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	
+	if ((round.roundTime && round.replaceDate)) {
+		var roundInterval = getRoundIntervalAsString(round.roundInterval);
+		event.time = roundDate(roundInterval, dateCell);
+	}
+	
 	var newRow = [
 		event.time,
 		event.device,
 		event.name,
 		event.value
 	];
-	if (round.roundTime) {
-		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
-
+	if (round.roundTime && !round.replaceDate) {
+		var dateCell = event.time;//"A" + (sheet.getLastRow() + 1).toString();
 		var roundInterval = getRoundIntervalAsString(round.roundInterval);
-		switch (round.roundMethod) {
-			case "Floor":
-				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + ")");
-			case "Ceiling":
-				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + ")");
-			default: //case "Nearest":
-				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + ")");
-		}
-		//=MROUND(Sheet1!A:A,"0:15")
-		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
-		
+		var roundedDate = roundDate(roundInterval, dateCell);
+		newRow.push(roundedDate);
 	}
 	if (logReporting) {
 		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
@@ -146,6 +140,22 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 		newRow.push(event.desc);
 	}
 	sheet.appendRow(newRow);
+}
+
+var roundDate = function(roundInterval, date) {
+	var roundedDate = date;
+	var roundInterval = getRoundIntervalAsString(round.roundInterval);
+	switch (round.roundMethod) {
+		case "Floor":
+			roundedDate = "=FLOOR(" + date + ", " + roundInterval + ")";
+		case "Ceiling":
+			roundedDate = "=CEIlING(" + date + ", " + roundInterval + ")";
+		default: //case "Nearest":
+			roundedDate = "=MROUND(" + date + ", " + roundInterval + ")";
+	}
+	return roundedDate;
+	//=MROUND(Sheet1!A:A,"0:15")
+	//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
 }
 
 var getRoundIntervalAsString = function(roundInterval) {
@@ -177,8 +187,7 @@ var initializeHeaderRow = function(sheet, logDesc, logReporting, round) {
 		];
 		sheet.appendRow(header);
 		sheet.getRange("A:A").setNumberFormat('MM/dd/yyyy HH:mm:ss');
-		if (round.roundTime) {data.roundOptions.roundInterval
-			//sheet.getLastColumn()+1
+		if (round.roundTime && !round.replaceDate) {
 			sheet.getRange("E1").setValue("Rounded Date/Time");
 			sheet.getRange("E:E").setNumberFormat('MM/dd/yyyy HH:mm:ss');
 			//sheet.setValue("=IF(ISBLANK(Sheet1!A:A), , MROUND(" + dateCell + ", " + getRoundIntervalAsString(round.roundInterval) + ")"));
@@ -227,7 +236,7 @@ var getLogCapacity = function() { return 500000; }
 var archiveCheck = function(sheet, data, result) {
 	if (needToArchive(sheet, data.archiveOptions, data)) { 
 		result = archiveSheet(sheet, result);
-		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions.roundTime)
+		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions)
 	}
 }
 
