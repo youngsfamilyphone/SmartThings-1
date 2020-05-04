@@ -129,26 +129,26 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 		var roundInterval;
 		switch (round.roundInterval) {
 			case 1:
-				roundInterval = "0:01";
+				roundInterval = "\"0:01\"";
 			case 5:
-				roundInterval = "0:05";
+				roundInterval = "\"0:05\"";
 			case 10:
-				roundInterval = "0:10";
+				roundInterval = "\"0:10\"";
 			case 30:
-				roundInterval = "0:30";
+				roundInterval = "\"0:30\"";
 			case 60:
-				roundInterval = "1:00";
+				roundInterval = "\"1:00\"";
 			default : //15:
-				roundInterval = "0:15";
+				roundInterval = "\"0:15\"";
 		}
 		
 		switch (round.roundMethod) {
 			case "Floor":
-				newRow.push("=FLOOR(" + dateCell + ", " + \"roundInterval\" + ")");
+				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + ")");
 			case "Ceiling":
-				newRow.push("=CEIlING(" + dateCell + ", " + \"roundInterval\" + ")");
+				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + ")");
 			default: //case "Nearest":
-				newRow.push("=MROUND(" + dateCell + ", " + \"roundInterval\" + ")");
+				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + ")");
 		}
 		//=MROUND(Sheet1!A:A,"0:15")
 		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
