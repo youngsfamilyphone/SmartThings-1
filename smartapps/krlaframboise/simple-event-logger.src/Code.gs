@@ -256,7 +256,7 @@ var getDaysSinceNow = function(firstDt) {
 }
 
 var getDaysSince = function(eventDate, firstDT) {
-	var firstDate = typeof firstDt=="undefined" ? Date.now() : Date.UTC(firstDT.getFullYear(), firstDT.getMonth(), firstDT.getDate());	var diffMS = Math.abs(eventDate - firstDate);
+	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
 	return Math.floor(diffMS / dayMS); 	
 }
