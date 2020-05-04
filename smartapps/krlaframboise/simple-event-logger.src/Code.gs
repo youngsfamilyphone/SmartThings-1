@@ -150,11 +150,11 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 		
 		switch (round.roundMethod) {
 			case "Floor":
-				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + )");
+				newRow.push("=FLOOR(" + dateCell + ", " + roundInterval + ")");
 			case "Ceiling":
-				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + )");
+				newRow.push("=CEIlING(" + dateCell + ", " + roundInterval + ")");
 			default: //case "Nearest":
-				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + )");
+				newRow.push("=MROUND(" + dateCell + ", " + roundInterval + ")");
 		}
 		//=MROUND(Sheet1!A:A,"0:15")
 		//=TEXT(MONTH(Sheet1!A:A) & "/" & DAY(Sheet1!A:A) & "/" & YEAR(Sheet1!A:A),"m/dd/yy") & " " & TEXT(MROUND(HOUR(Sheet1!A:A) & ":" & RIGHT("0" & MINUTE(Sheet1!A:A),2),"0:15"),"hh:mm"
@@ -166,7 +166,7 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	if (logReporting) {
 		var dateCell = "A" + (sheet.getLastRow() + 1).toString();
 		newRow.push("=INT(" + dateCell + ")");
-		newRow.push("=TIME(" + dateCell " ")");
+		newRow.push("=TIME(" + dateCell + ")");
 		newRow.push("=HOUR(" + dateCell + ")");
 	}	
 	sheet.appendRow(newRow);
@@ -184,7 +184,7 @@ var initializeHeaderRow = function(sheet, logDesc, logReporting, logRoundedTime)
 		sheet.getRange("A:A").setNumberFormat('MM/dd/yyyy HH:mm:ss');
 		if (logRoundedTime) {
 			//sheet.getLastColumn()+1
-			sheet.getRange("E1").setValue("Rounded Date/Time);
+			sheet.getRange("E1").setValue("Rounded Date/Time");
 			sheet.getRange("E:E").setNumberFormat('MM/dd/yyyy HH:mm:ss');
 		}
 		if (logDesc) {//(logDesc || logReporting) {
