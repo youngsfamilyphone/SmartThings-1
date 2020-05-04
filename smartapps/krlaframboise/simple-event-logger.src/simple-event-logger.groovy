@@ -364,12 +364,12 @@ private getOptionsPageContent() {
 					title: "Round Interval",
 					defaultValue: 15,
 					required: false,
-					options: [1,5,10,15,30,60]/*,
+					options: [1,5,10,15,30,60],
 			input "replaceDate", "bool",
 				title: "Replace Original Date",
 				description: "Replace the rounded date with the original date",
-				required: true,
-				defaultValue: false*/
+				defaultValue: false,
+				required: true
 		}
 	}
 	section("${getWebAppName()}") {		
