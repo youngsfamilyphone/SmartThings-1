@@ -266,6 +266,7 @@ var getDaysSince = function(eventDate, firstDt) {
     }*/
 	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
+	var diffMS = Math.abs(eventDate - firstDate);
 	return Math.floor(diffMS / dayMS); 	
 }
 
