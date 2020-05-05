@@ -72,7 +72,6 @@ function testProcessData() {
     }
   */
 	
- //post: [uri:https://script.google.com/macros/s/AKfycbyP-E9LmoP2xehO7GUl2OBEvuYoFrdLf-jhksq3eeBSxX_ok2s/exec, contentType:application/json, body:{"postBackUrl":"https://graph-na02-useast1.api.smartthings.com:443/api/token/d6f30f8e-a123-47ad-9048-f61612759e20/smartapps/installations/db4c817e-891e-46fa-b63a-5452d0e97a3c/update-logging-status","range":{"eventStartTime":"2020-05-05T13:57:37+0000","eventEndTime":"2020-05-05T14:12:37+0000"},"archiveOptions":{"logIsFull":false,"type":"Weekly","interval":50000},"logDesc":false,"logReporting":false,"deleteExtraColumns":true,"roundOptions":{"roundTime":true,"roundMethod":"Nearest","roundInterval":15,"replaceDate":true},"events":[{"time":"05/05/2020 07:57:44","device":"Greenhouse Sensor","name":"illuminance","value":"9114","desc":"Greenhouse Sensor illuminance is 9114 lux"},{"time":"05/05/2020 07:57:48","device":"Greenhouse Heater Fan","name":"power","value":"1147.0","desc":"Greenhouse Heater Fan power is 1147.0"},{"time":"05/05/2020 07:57:53","device":"Greenhouse Heater Fan","na...[TRUNCATED]
  //var json = {"contentLength": 1, "postData": {"contents": data}};
         
   processData(data);
