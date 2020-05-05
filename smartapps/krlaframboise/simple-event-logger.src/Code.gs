@@ -47,6 +47,29 @@
  *  permissions and limitations under the License.
  *
  */
+
+function test() {
+  var data = {
+    "postBackUrl": "/api/token/${accessToken}/smartapps/installations/${app.id}/update-logging-status",
+    "archiveOptions": {"logIsFull": true, "type": "Days", "interval": 1},
+    "logDesc": false,
+    "logReporting": false,
+    "deleteExtraColumns": true,
+    "roundOptions": {"roundTime": true, "roundMethod": "Nearest", "roundInterval": 15, "replaceDate": false},
+    "events": [{ "time": "5/4/2020 14:39:40", "device": "Greenhouse Sensor", "name": "illuminance", "value": "1777", "desc": {"linkText":"", "displayName": "", "name": "1777", "value": "LUX", "unit": "1777LUX"}}],
+    "status" : {
+  		"result": "Successful",
+		"start":  "5/4/2020 14:00:00",
+		"end":  "5/4/2020 14:01:00",
+		"runTime": "60 seconds",
+		"eventsLogged": "1",
+		"totalEventsLogged": "1",
+      "freeSpace": "60%"}
+  };
+ //var json = {"contentLength": 1, "postData": {"contents": data}};
+        
+  processData(data);
+}
    
 var getVersion = function() { return "01.06.00"; }
  
@@ -56,25 +79,30 @@ function doGet(e) {
 }
 
 function doPost(e) {
-	var result = new Object();
-	result.version = getVersion();
-	result.eventsLogged = 0;
-	
+	var result;
 	if (e && e.contentLength > 0) {		
 		var data = JSON.parse(e.postData.contents);
-		if (data) {	
+      result = procesData(data);
+	}
+	
+	return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);	
+}
+
+var processData = function(data) {
+  	var result = new Object();
+	result.version = getVersion();
+	result.eventsLogged = 0;
+  		if (data) {	
 			var sheet = SpreadsheetApp.getActiveSheet();
  			Logger.log(sheet.getName());
 			
 			// need to check for archive on each log line/entry to archive correctly
-			result = logEvents(sheet, data, result);
+			var result = logEvents(sheet, data, result);
 			
 			result.freeSpace = calculateAvailableLogSpace(sheet);
 			sendPostback(data.postBackUrl, result);
+          return result;
 		}
-	}
-	
-	return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);	
 }
 
 var logEvents = function(sheet, data, result) {
@@ -89,8 +117,8 @@ var logEvents = function(sheet, data, result) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
 			//TODO: Test by logging now as log time in a column.  this can be moved out of the for loop if all events in this post have the same day.
-			archiveCheck(sheet, data, result, round);
-			logEvent(sheet, data.logDesc, data.logReporting, round, data.events[i]);
+			archiveCheck(sheet, data, result, data.roundOptions);
+			logEvent(sheet, data.logDesc, data.logReporting, data.roundOptions, data.events[i]);
 			result.eventsLogged++;
 		}
 				
