@@ -57,6 +57,7 @@ function test() {
     "deleteExtraColumns": true,
     "roundOptions": {"roundTime": true, "roundMethod": "Nearest", "roundInterval": 15, "replaceDate": true},
     "events": [{ "time": "5/4/2020 14:39:40", "device": "Greenhouse Sensor", "name": "illuminance", "value": "1777", "desc": {"linkText":"", "displayName": "", "name": "1777", "value": "LUX", "unit": "1777LUX"}}],
+    "range": {"eventStartTime":"Tue May 05 13:57:37 UTC 2020", "eventEndTime":"Tue May 05 17:36:27 UTC 2020"},
     "status" : {
   		"result": "Successful",
 		"start":  "5/4/2020 14:00:00",
@@ -64,9 +65,8 @@ function test() {
 		"runTime": "60 seconds",
 		"eventsLogged": "1",
 		"totalEventsLogged": "1",
-      "freeSpace": "60%",
-    "range": ["eventStartTime":"Tue May 05 13:57:37 UTC 2020", "eventEndTime":"Tue May 05 17:36:27 UTC 2020"]
-}
+      "freeSpace": "60%",   
+    }
   };
  //var json = {"contentLength": 1, "postData": {"contents": data}};
         
@@ -398,5 +398,3 @@ var clearSheet = function(sheet) {
 	}
 	sheet.getRange(2, 1, 1, sheet.getLastColumn()).clearContent();
 }
-
-
