@@ -116,7 +116,7 @@ var logEvents = function(sheet, data, result) {
 		var eventsSpanDay = eventsSpanCurrentDay(data.range);
 		// no need to check if the date doesn't span multiple days and archive type is one of these
 		var archiveByDate = data.archiveOptions.archiveType in ("Days", "Weekly", "Monthy", "Yearly");
-		var checkArchive =  archiveByDate ? eventsSpanDay? true : false : true
+		var checkArchive =  archiveByDate ? eventsSpanDay? true : false : true;
 		
 				     
 		for (i=0; i < data.events.length; i++) {
