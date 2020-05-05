@@ -751,6 +751,7 @@ mappings {
 def api_updateLoggingStatus() {
 	def status = state.loggingStatus ?: [:]
 	def data = request.JSON
+	logTrace: "status: " + status + " data: " + data;
 	if (data) {
 		status.success = data.success
 		status.eventsArchived = data.eventsArchived
