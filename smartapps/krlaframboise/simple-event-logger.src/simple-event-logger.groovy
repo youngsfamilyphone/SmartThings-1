@@ -92,7 +92,7 @@ preferences {
 	page(name: "createTokenPage")
 }
 
-def version() { return "01.05.00" }
+def version() { return "01.06.00" }
 def gsVersion() { return "01.05.00" }
 
 def mainPage() {
@@ -365,6 +365,11 @@ private getOptionsPageContent() {
 					defaultValue: 15,
 					required: false,
 					options: [1,5,10,15,30,60]
+			input "replaceDate", "bool",
+				title: "Replace Original Date",
+				description: "Replace the rounded date with the original date",
+				defaultValue: false,
+				required: true
 		}
 	}
 	section("${getWebAppName()}") {		
@@ -680,7 +685,8 @@ private getRoundOptions() {
 	return [
 		roundTime: (settings?.roundTime ==true),
 		roundMethod: (settings?.roundMethod ?: "Nearest"),
-		roundInterval: safeToLong(settings?.roundInterval, 15)
+		roundInterval: safeToLong(settings?.roundInterval, 15),
+		replaceDate: (settings?.replaceDate == true)
 	]
 }
 
