@@ -48,16 +48,19 @@
  *
  */
 
-function test() {
+function testProcessData() {
   var data = {
     "postBackUrl": "/api/token/${accessToken}/smartapps/installations/${app.id}/update-logging-status",
+    "range": {"eventStartTime":"Tue May 05 13:57:37 UTC 2020", "eventEndTime":"Tue May 05 17:36:27 UTC 2020"},
     "archiveOptions": {"logIsFull": true, "type": "Days", "interval": 1},
     "logDesc": false,
     "logReporting": false,
     "deleteExtraColumns": true,
     "roundOptions": {"roundTime": true, "roundMethod": "Nearest", "roundInterval": 15, "replaceDate": true},
-    "events": [{ "time": "5/4/2020 14:39:40", "device": "Greenhouse Sensor", "name": "illuminance", "value": "1777", "desc": {"linkText":"", "displayName": "", "name": "1777", "value": "LUX", "unit": "1777LUX"}}],
-    "range": {"eventStartTime":"Tue May 05 13:57:37 UTC 2020", "eventEndTime":"Tue May 05 17:36:27 UTC 2020"},
+    "events": [{ "time": "5/4/2020 14:39:40", "device": "Greenhouse Sensor", "name": "illuminance", "value": "1777", "desc": {"linkText":"", "displayName": "", "name": "1777", "value": "LUX", "unit": "1777LUX"}}]
+  };
+	
+/*    
     "status" : {
   		"result": "Successful",
 		"start":  "5/4/2020 14:00:00",
@@ -67,11 +70,27 @@ function test() {
 		"totalEventsLogged": "1",
       "freeSpace": "60%",   
     }
-  };
+  */
+	
+ //post: [uri:https://script.google.com/macros/s/AKfycbyP-E9LmoP2xehO7GUl2OBEvuYoFrdLf-jhksq3eeBSxX_ok2s/exec, contentType:application/json, body:{"postBackUrl":"https://graph-na02-useast1.api.smartthings.com:443/api/token/d6f30f8e-a123-47ad-9048-f61612759e20/smartapps/installations/db4c817e-891e-46fa-b63a-5452d0e97a3c/update-logging-status","range":{"eventStartTime":"2020-05-05T13:57:37+0000","eventEndTime":"2020-05-05T14:12:37+0000"},"archiveOptions":{"logIsFull":false,"type":"Weekly","interval":50000},"logDesc":false,"logReporting":false,"deleteExtraColumns":true,"roundOptions":{"roundTime":true,"roundMethod":"Nearest","roundInterval":15,"replaceDate":true},"events":[{"time":"05/05/2020 07:57:44","device":"Greenhouse Sensor","name":"illuminance","value":"9114","desc":"Greenhouse Sensor illuminance is 9114 lux"},{"time":"05/05/2020 07:57:48","device":"Greenhouse Heater Fan","name":"power","value":"1147.0","desc":"Greenhouse Heater Fan power is 1147.0"},{"time":"05/05/2020 07:57:53","device":"Greenhouse Heater Fan","na...[TRUNCATED]
  //var json = {"contentLength": 1, "postData": {"contents": data}};
         
   processData(data);
 }
+
+
+function testPost() {
+  //var post: ["uri":"https://script.google.com/macros/s/---/exec", "contentType":"application/json", "body":{"postBackUrl":"https://graph-na02-useast1.api.smartthings.com:443/api/token/---/smartapps/installations/---/update-logging-status","range":{"eventStartTime":"2020-05-05T13:57:37+0000","eventEndTime":"2020-05-05T14:12:37+0000"},"archiveOptions":{"logIsFull":false,"type":"Weekly","interval":50000},"logDesc":false,"logReporting":false,"deleteExtraColumns":true,"roundOptions":{"roundTime":true,"roundMethod":"Nearest","roundInterval":15,"replaceDate":true},"events":[{"time":"05/05/2020 07:57:44","device":"Greenhouse Sensor","name":"illuminance","value":"9114","desc":"Greenhouse Sensor illuminance is 9114 lux"},{"time":"05/05/2020 07:57:48","device":"Greenhouse Heater Fan","name":"power","value":"1147.0","desc":"Greenhouse Heater Fan power is 1147.0"}]}]
+ 
+  var data = {"postBackUrl":"https://graph-na02-useast1.api.smartthings.com:443/api/token/---/smartapps/installations/---/update-logging-status","range":{"eventStartTime":"2020-05-05T13:57:37+0000","eventEndTime":"2020-05-05T14:12:37+0000"},"archiveOptions":{"logIsFull":false,"type":"Weekly","interval":50000},"logDesc":false,"logReporting":false,"deleteExtraColumns":true,"roundOptions":{"roundTime":true,"roundMethod":"Nearest","roundInterval":15,"replaceDate":true},"events":[{"time":"05/05/2020 07:57:44","device":"Greenhouse Sensor","name":"illuminance","value":"9114","desc":"Greenhouse Sensor illuminance is 9114 lux"},{"time":"05/05/2020 07:57:48","device":"Greenhouse Heater Fan","name":"power","value":"1147.0","desc":"Greenhouse Heater Fan power is 1147.0"}]}
+
+	
+//var json = {"contentLength": 1, "postData": {"contents": data}};
+        
+  processData(data);
+}
+
+
    
 var getVersion = function() { return "01.06.00"; }
  
@@ -115,10 +134,10 @@ var logEvents = function(sheet, data, result) {
 
 		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions)
 		
-		var eventsSpanDay = eventsSpanCurrentDay(data.range);
+		//var eventsSpanDay = eventsSpanCurrentDay(data.range);
 		// no need to check if the date doesn't span multiple days and archive type is one of these
-		var archiveByDate = ["Days", "Weekly", "Monthy", "Yearly"].indexOf(data.archiveOptions.type) >= 0;
-		var checkArchive =  archiveByDate ? eventsSpanDay>0? true : false : true;
+		//var archiveByDate = ["Days", "Weekly", "Monthy", "Yearly"].indexOf(data.archiveOptions.type) >= 0;
+		//var checkArchive =  archiveByDate ? eventsSpanDay>0? true : false : true;
 		
 				     
 		for (i=0; i < data.events.length; i++) {
