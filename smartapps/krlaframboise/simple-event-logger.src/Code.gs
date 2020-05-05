@@ -117,17 +117,17 @@ var logEvents = function(sheet, data, result) {
 		
 		var eventsSpanDay = eventsSpanCurrentDay(data.range);
 		// no need to check if the date doesn't span multiple days and archive type is one of these
-		var archiveByDate = data.archiveOptions.archiveType in ("Days", "Weekly", "Monthy", "Yearly");
-		var checkArchive =  archiveByDate ? eventsSpanDay? true : false : true;
+		var archiveByDate = ["Days", "Weekly", "Monthy", "Yearly"].indexOf(data.archiveOptions.type) >= 0;
+		var checkArchive =  archiveByDate ? eventsSpanDay>0? true : false : true;
 		
 				     
 		for (i=0; i < data.events.length; i++) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
 			//TODO: Test by logging now as log time in a column.  this can be moved out of the for loop if all events in this post have the same day.
-			if(checkArchive) {
+			//if(checkArchive) {  // needs to also check last event date to compare to event end date.
 				archiveCheck(sheet, data, result, data.roundOptions);
-			}
+			//}
 		
 			logEvent(sheet, data.logDesc, data.logReporting, data.roundOptions, data.events[i]);
 			result.eventsLogged++;
@@ -151,14 +151,17 @@ var logEvents = function(sheet, data, result) {
 }
 
 var eventsSpanCurrentDay = function(range) {
-	data.range.eventStartTime // range: [eventStartTime:Tue May 05 13:57:37 UTC 2020, eventEndTime:Tue May 05 17:36:27 UTC 2020]
+	// range: [eventStartTime:Tue May 05 13:57:37 UTC 2020, eventEndTime:Tue May 05 17:36:27 UTC 2020]
 
-	var startDate = new Date(data.range.eventStartTime);
+	var startDate = new Date(range.eventStartTime);
 	var firstDate = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
 	
-	var endDate = new Date(data.range.eventEndTime);
+	var endDate = new Date(range.eventEndTime);
 	var lastDate = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-	return getDaysSince(firstDate, lastDate) > 0;
+    
+	var dayMS = 1000 * 60 * 60 * 24;
+	var diffMS = Math.abs(lastDate - firstDate);
+	return Math.floor(diffMS / dayMS);
 }
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
