@@ -92,8 +92,8 @@ preferences {
 	page(name: "createTokenPage")
 }
 
-def version() { return "01.05.00" }
-def gsVersion() { return "01.05.00" }
+def version() { return "01.06.00" }
+def gsVersion() { return "01.06.00" }
 
 def mainPage() {
 	dynamicPage(name:"mainPage", uninstall:true, install:true) {
@@ -586,7 +586,7 @@ def logNewEvents() {
 	logDebug "SmartThings found ${String.format('%,d', eventCount)} events between ${getFormattedLocalTime(startDate.time)} and ${getFormattedLocalTime(endDate.time)}${actionMsg}"
 	
 	if (events) {
-		postEventsToGoogleSheets(events)
+		postEventsToGoogleSheets(events, def range = [eventStartTime: startDate, eventEndTime: endDate]);
 	}
 	else {		
 		state.loggingStatus.success = true
@@ -640,10 +640,12 @@ private getLogCatchUpFrequencySettingMS() {
 	return (minutesVal * 60 * 1000)
 }
 
-private postEventsToGoogleSheets(events) {
+private postEventsToGoogleSheets(events, range) {
+	logTrace "event date range: " + range;
 	def jsonOutput = new groovy.json.JsonOutput()
 	def jsonData = jsonOutput.toJson([
 		postBackUrl: "${state.endpoint}update-logging-status",
+        range: range,
 		archiveOptions: getArchiveOptions(),
 		logDesc: (settings?.logDesc != false),
 		logReporting: (settings?.logReporting == true),
@@ -704,6 +706,7 @@ private getRoundInterval() {
 
 // Google Sheets redirects the post to a temporary url so the response is usually 302 which is page moved.
 def processLogEventsResponse(response, data) {
+	logTrace("Sheets response: " + response + " data: " + data);
 	if (response?.status == 302) {
 		logTrace "${getWebAppName()} Response: ${response.status}"
 	}
