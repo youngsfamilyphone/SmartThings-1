@@ -88,7 +88,7 @@ function testPost() {
 //var json = {"contentLength": 1, "postData": {"contents": data}};
         
   var result = processData(data);
-return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+//return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
 
 
