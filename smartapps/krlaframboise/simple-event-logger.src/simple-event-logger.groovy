@@ -586,7 +586,8 @@ def logNewEvents() {
 	logDebug "SmartThings found ${String.format('%,d', eventCount)} events between ${getFormattedLocalTime(startDate.time)} and ${getFormattedLocalTime(endDate.time)}${actionMsg}"
 	
 	if (events) {
-		postEventsToGoogleSheets(events, def range = [eventStartTime: startDate, eventEndTime: endDate]);
+		def range = [eventStartTime: startDate, eventEndTime: endDate];
+		postEventsToGoogleSheets(events, range);
 	}
 	else {		
 		state.loggingStatus.success = true
