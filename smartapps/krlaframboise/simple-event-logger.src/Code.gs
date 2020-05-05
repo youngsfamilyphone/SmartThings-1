@@ -55,7 +55,7 @@ function test() {
     "logDesc": false,
     "logReporting": false,
     "deleteExtraColumns": true,
-    "roundOptions": {"roundTime": true, "roundMethod": "Nearest", "roundInterval": 15, "replaceDate": false},
+    "roundOptions": {"roundTime": true, "roundMethod": "Nearest", "roundInterval": 15, "replaceDate": true},
     "events": [{ "time": "5/4/2020 14:39:40", "device": "Greenhouse Sensor", "name": "illuminance", "value": "1777", "desc": {"linkText":"", "displayName": "", "name": "1777", "value": "LUX", "unit": "1777LUX"}}],
     "status" : {
   		"result": "Successful",
@@ -300,12 +300,13 @@ var needToArchive = function(sheet, archiveOptions, data) {
 	}
 }
 
-var getDaysSince = function(eventDate, firstDt) {
+var getDaysSince = function(eventDt, firstDt) {
     /*if (typeof firstDt=='undefined') {
       return 0;
       //var currentDT = new Date();
       //firstDt = Date.UTC(currentDT.getFullYear(), currentDT.getMonth(), currentDT.getDate());
     }*/
+    var eventDate = new Date(eventDt);
 	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 	var dayMS = 1000 * 60 * 60 * 24;
 	var diffMS = Math.abs(eventDate - firstDate);
