@@ -708,7 +708,9 @@ private getRoundInterval() {
 
 // Google Sheets redirects the post to a temporary url so the response is usually 302 which is page moved.
 def processLogEventsResponse(response, data) {
-	logTrace("Sheets response: " + response?.getData() + "error: " + response?.getErrorData() + " data: " + data);
+	logTrace "Sheets response: " + response?.getData();
+	logTrace "error: " + response?.getErrorData();
+	logTrace " data: " + data;
 	if (response?.status == 302) {
 		logTrace "${getWebAppName()} Response: ${response.status}"
 	}
@@ -751,7 +753,7 @@ mappings {
 def api_updateLoggingStatus() {
 	def status = state.loggingStatus ?: [:]
 	def data = request.JSON
-	logTrace: "status: " + status + " data: " + data;
+	logTrace "status: " + status + " data: " + data;
 	if (data) {
 		status.success = data.success
 		status.eventsArchived = data.eventsArchived
