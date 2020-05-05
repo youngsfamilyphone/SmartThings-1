@@ -658,7 +658,9 @@ private postEventsToGoogleSheets(events, range) {
 		uri: "${settings?.googleWebAppUrl}",
 		contentType: "application/json",
 		body: jsonData
-	]	
+	]
+	
+	logTrace "post: " + params;
 	
 	asynchttp_v1.post(processLogEventsResponse, params)
 }
