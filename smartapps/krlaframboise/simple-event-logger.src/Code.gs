@@ -143,7 +143,7 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	
 	if (round.roundTime && round.replaceDate) {
 		var roundInterval = getRoundIntervalAsString(round.roundInterval);
-		event.time = roundDate(roundInterval, event.time);
+		event.time = roundDate(round.roundMethod, roundInterval, event.time);
 	}
 	
 	var newRow = [
@@ -170,10 +170,9 @@ var logEvent = function(sheet, logDesc, logReporting, round, event) {
 	sheet.appendRow(newRow);
 }
 
-var roundDate = function(roundInterval, date) {
-	var roundedDate = date;
-	var roundInterval = getRoundIntervalAsString(round.roundInterval);
-	switch (round.roundMethod) {
+var roundDate = function(roundMethod, roundInterval, date) {
+	var roundedDate;
+	switch (roundMethod) {
 		case "Floor":
 			roundedDate = "=FLOOR(" + date + ", " + roundInterval + ")";
 		case "Ceiling":
@@ -199,8 +198,8 @@ var getRoundIntervalAsString = function(roundInterval) {
 			interval = "\"0:30\"";
 		case 60:
 			interval = "\"1:00\"";
-		//default : //15:
-			//interval = "\"0:15\"";
+		default : //15:
+			interval = "\"0:15\"";
 	}
 	return interval;
 }
@@ -273,11 +272,13 @@ var needToArchive = function(sheet, archiveOptions, data) {
 	var eventDate = data.events[i].time;
 	// is this google script or javascript dates https://developers.google.com/apps-script/reference/contacts/date-field#getDay()
 	// getDay is different between the two
-	var sheetFirstDate = sheet.getRange(2, 1).getValue();
-	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).getValue();
-	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
+	
+    	// do this first to handle the case of a new file with header row only
 	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
       		return false;
+  	var sheetFirstDate = sheet.getRange(2, 1).getValue();
+	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).getValue();
+  	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
 
 	//Logger.log(archiveOptions);
 	switch (archiveOptions.type) {
