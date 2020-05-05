@@ -174,11 +174,11 @@ var roundDate = function(roundMethod, roundInterval, date) {
 	var roundedDate;
 	switch (roundMethod) {
 		case "Floor":
-			roundedDate = "=FLOOR("\" + date + "\", " + roundInterval + ")";
+			roundedDate = "=FLOOR(\"" + date + "\", " + roundInterval + ")";
 		case "Ceiling":
-			roundedDate = "=CEIlING("\" + date + "\", " + roundInterval + ")";
+			roundedDate = "=CEIlING(\"" + date + "\", " + roundInterval + ")";
 		default: //case "Nearest":
-			roundedDate = "=MROUND("\" + date + "\", " + roundInterval + ")";
+			roundedDate = "=MROUND(\"" + date + "\", " + roundInterval + ")";
 	}
 	return roundedDate;
 	//=MROUND(Sheet1!A:A,"0:15")
