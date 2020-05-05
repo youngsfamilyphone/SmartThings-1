@@ -273,10 +273,10 @@ var needToArchive = function(sheet, archiveOptions, data) {
 	// is this google script or javascript dates https://developers.google.com/apps-script/reference/contacts/date-field#getDay()
 	// getDay is different between the two
 	
+	var sheetFirstDate = sheet.getRange(2, 1).getValue();
     	// do this first to handle the case of a new file with header row only
 	if (sheet.getLastRow()<=1 || typeof sheetFirstDate == "undefined")
       		return false;
-  	var sheetFirstDate = sheet.getRange(2, 1).getValue();
 	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).getValue();
   	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
 
@@ -290,12 +290,12 @@ var needToArchive = function(sheet, archiveOptions, data) {
 			return (daysSinceFirstLog >= archiveOptions.interval);
 		case "Weekly":  // restart on Sunday
 			//getDay()
-			return (eventDate.getDay() != sheetLastDate.getDay() && getDaysSince(eventDate, sheetLastDate) > 7);
+			return (new Date(eventDate).getDay() != sheetLastDate.getDay() && getDaysSince(eventDate, sheetLastDate) > 7);
 		case "Monthly": // restart on 1st of month
 			//getMonth() //getDate()
-			return (eventDate.getMonth() != sheetLastDate.getMonth());		
+			return (new Date(eventDate).getMonth() != sheetLastDate.getMonth());		
 		case "Yearly": // restart on 1st of the year
-			return (eventDate.getYear() != sheetLastDate.getYear());
+			return (new Date(eventDate).getYear() != sheetLastDate.getYear());
 		default:
 			return false;
 	}
