@@ -151,8 +151,12 @@ var logEvents = function(sheet, data, result) {
 var eventsSpanCurrentDay = function(range) {
 	data.range.eventStartTime // range: [eventStartTime:Tue May 05 13:57:37 UTC 2020, eventEndTime:Tue May 05 17:36:27 UTC 2020]
 
-	    var eventDate = new Date(eventDt);
-	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
+	var startDate = new Date(data.range.eventStartTime);
+	var firstDate = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+	
+	var endDate = new Date(data.range.eventEndTime);
+	var lastDate = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+	return getDaysSince(firstDate, lastDate) > 0;
 }
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
