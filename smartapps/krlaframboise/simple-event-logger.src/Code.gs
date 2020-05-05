@@ -113,11 +113,20 @@ var logEvents = function(sheet, data, result) {
 
 		initializeHeaderRow(sheet, data.logDesc, data.logReporting, data.roundOptions)
 		
+		var eventsSpanDay = eventsSpanCurrentDay(data.range);
+		// no need to check if the date doesn't span multiple days and archive type is one of these
+		var archiveByDate = data.archiveOptions.archiveType in ("Days", "Weekly", "Monthy", "Yearly");
+		var checkArchive =  archiveByDate ? eventsSpanDay? true : false : true
+		
+				     
 		for (i=0; i < data.events.length; i++) {
 			
 			// need to check for archive on each entry to properly archive at the proper time
 			//TODO: Test by logging now as log time in a column.  this can be moved out of the for loop if all events in this post have the same day.
-			archiveCheck(sheet, data, result, data.roundOptions);
+			if(checkArchive) {
+				archiveCheck(sheet, data, result, data.roundOptions);
+			}
+		
 			logEvent(sheet, data.logDesc, data.logReporting, data.roundOptions, data.events[i]);
 			result.eventsLogged++;
 		}
@@ -137,6 +146,13 @@ var logEvents = function(sheet, data, result) {
 		result.success = false;
 	}
 	return result;
+}
+
+var eventsSpanCurrentDay(range) {
+	data.range.eventStartTime // range: [eventStartTime:Tue May 05 13:57:37 UTC 2020, eventEndTime:Tue May 05 17:36:27 UTC 2020]
+
+	    var eventDate = new Date(eventDt);
+	var firstDate = Date.UTC(firstDt.getFullYear(), firstDt.getMonth(), firstDt.getDate());
 }
 
 var logEvent = function(sheet, logDesc, logReporting, round, event) {
