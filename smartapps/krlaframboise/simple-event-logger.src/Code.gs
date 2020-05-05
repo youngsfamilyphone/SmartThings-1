@@ -103,7 +103,7 @@ function doPost(e) {
 	var result;
 	if (e && e.contentLength > 0) {		
 		var data = JSON.parse(e.postData.contents);
-      result = procesData(data);
+      result = processData(data);
 	}
 	
 	return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);	
