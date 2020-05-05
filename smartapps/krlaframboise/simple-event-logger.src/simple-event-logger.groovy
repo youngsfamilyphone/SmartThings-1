@@ -92,7 +92,7 @@ preferences {
 	page(name: "createTokenPage")
 }
 
-def version() { return "01.05.00" }
+def version() { return "01.06.00" }
 def gsVersion() { return "01.05.00" }
 
 def mainPage() {
