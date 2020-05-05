@@ -148,7 +148,7 @@ var logEvents = function(sheet, data, result) {
 	return result;
 }
 
-var eventsSpanCurrentDay(range) {
+var eventsSpanCurrentDay = function(range) {
 	data.range.eventStartTime // range: [eventStartTime:Tue May 05 13:57:37 UTC 2020, eventEndTime:Tue May 05 17:36:27 UTC 2020]
 
 	    var eventDate = new Date(eventDt);
