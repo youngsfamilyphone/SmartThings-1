@@ -64,7 +64,9 @@ function test() {
 		"runTime": "60 seconds",
 		"eventsLogged": "1",
 		"totalEventsLogged": "1",
-      "freeSpace": "60%"}
+      "freeSpace": "60%",
+    "range": ["eventStartTime":"Tue May 05 13:57:37 UTC 2020", "eventEndTime":"Tue May 05 17:36:27 UTC 2020"]
+}
   };
  //var json = {"contentLength": 1, "postData": {"contents": data}};
         
