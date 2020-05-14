@@ -334,7 +334,7 @@ var needToArchive = function(sheet, archiveOptions, data) {
 			return (daysSinceFirstLog >= archiveOptions.interval);
 		case "Weekly":  // restart on Sunday
 			//getDay()
-			return (new Date(eventDate).getDay() != sheetLastDate.getDay() && (new Date(eventDate).getDay() == 0 || getDaysSince(eventDate, sheetFirstDate) > 7));		
+			return (new Date(eventDate).getDay() != sheetLastDate.getDay() && new Date(eventDate).getDay() < sheetLastDate.getDay());  // Sunday - Saturday : 0 - 6		
 		case "Monthly": // restart on 1st of month
 			//getMonth() //getDate()
 			return (new Date(eventDate).getMonth() != sheetLastDate.getMonth());		
