@@ -323,6 +323,10 @@ var needToArchive = function(sheet, archiveOptions, data) {
       		return false;
 	var sheetLastDate = sheet.getRange(sheet.getLastRow(), 1).getValue();
   	var daysSinceFirstLog = getDaysSince(eventDate, sheetFirstDate);
+	
+	//var eventDay = new Date(eventDate).getDay();
+    	//var lastDay = new Date(sheetLastDate).getDay();
+    	//var firstDay = new Date(sheetFirstDate).getDay();
 
 	//Logger.log(archiveOptions);
 	switch (archiveOptions.type) {
